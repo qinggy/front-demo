@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>React Router Demo</title>
+    <script src="./dll/react.min.js"></script>
+    <!--如果使用服务器解析后，我们就可以不需要下面类库的引用-->
+    <script src="./dll/react-dom.min.js"></script> <!--ReactDOM.render 在该类库中-->
+    <script src="./dll/browser.min.js"></script>
+    <script src="./dll/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="container"></div>
+</body>
+
+</html>
+<script type="text/babel">
+
+    class RepoList extends React.Component{
+        constructor(props){
+            super(props);
+            this.state={
+                loading: true,
+                error: null,
+                data: null,
+            }
+        }
+
+        /**es5时代的写法，es6不再支持，相当于es6时代的constructor里面的 this.state**/
+        getInitialState() {
+          return {};
+        }
+
+        /**es5时代的写法，es6不再支持，相当于es6时代的constructor里面的 this.state**/
+        getInitialProps(){
+            return {};
+        }
+      
+        componentDidMount() {
+          this.props.promise.then(
+            value => this.setState({loading: false, data: value}),
+            error => this.setState({loading: false, error: error}));
+        }
+      
+        render() {
+          if (this.state.loading) {
+            return <span>Loading...</span>;
+          }
+          else if (this.state.error !== null) {
+            return <span>Error: {this.state.error.message}</span>;
+          }
+          else {
+            var repos = this.state.data.items;
+            var repoList = repos.map(function (repo, index) {
+              return (
+                <li key={index}><a href={repo.html_url}>{repo.name}</a> ({repo.stargazers_count} stars) <br/> {repo.description}</li>
+              );
+            });
+            return (
+              <main>
+                <h1>Most Popular JavaScript Projects in Github</h1>
+                <ol>{repoList}</ol>
+              </main>
+            );
+          }
+        }
+      }
+      
+      ReactDOM.render(
+        <RepoList promise={$.getJSON('https://api.github.com/search/repositories?q=javascript&sort=stars')} />,
+        document.getElementById('container')
+      );
+</script>
