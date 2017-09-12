@@ -2,7 +2,7 @@
 
 > 参考博文地址 http://www.jianshu.com/p/4df92c335617
 
-    - [webpack 打包-创建项目步骤]
+    - [webpack 打包-创建项目步骤（中间部分过程没有先后）]
     - 1. 创建项目文件结构, 默认可使用app, build等文件夹
     - 2. 使用命令[npm init]来初始化 package.json文件
     - 3. 安装webpack [npm install --save-dev webpack]
