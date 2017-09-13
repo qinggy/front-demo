@@ -53,7 +53,7 @@ yarn add aws-sdk
 ```
 My package is now installed and Yarn has modified or created 3 files for me:
 
-    ![](ae38eedf5a61526baf5b6ef72aa05cdcde0d6f6e.png)
+    ![image](https://github.com/qinggy/front-demo/blob/master/ae38eedf5a61526baf5b6ef72aa05cdcde0d6f6e.png)
 
     1. node_modules directory where my package is located.
     2. package.json file where it has added my package to a dependencies list.This allows others to download my project and simply run yarn to install all packages that I've added.
