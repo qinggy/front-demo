@@ -17,6 +17,7 @@ Yarn is a Node package manager [created by Facebook26](https://code.facebook.com
 
 ### Installing Yarn
 Most workspaces come with npm installed for you already. Let's check if it's installed by running npm -v.
+![image](https://github.com/qinggy/image/blob/master/0b22f4b45715f0d3f9a7311c671e2888473297bd.png)
 
 ```js
     npm install -g yarn || npm install --save-dev yarn
@@ -29,19 +30,7 @@ This installs Yarn globally (not just in the node_modules directory in our proje
 
 Now that Yarn is installed, we can put it to work. Let's first make sure it knows this is a Yarn project by running yarn init. You're then free to enter text for the options it gives you or just hit enter to skip or use the default. For this guide, I only care about a couple of them, the rest, like version or entry point, I'll just hit enter for.
 
-```js
-    bradydowLinq:~/workspace/testing $ yarn init
-    yarn init v0.15.0
-    question name (testing):
-    question version (1.0.0):
-    question description: 
-    question entry point (index.js):
-    question author: 
-    question License (MIT):
-    success Saved package.json
-    Done in 42.84s.
-    bradydowLinq:~/workspace/testing $
-```
+![image](https://github.com/qinggy/image/blob/master/6cd4167a0aba83255da9521c5d89ec3b54289844_1_690x143.png)
 
 This just created a package.json file in our project folder containing some information about our project. It will soon contain a list of packages we have installed.
 
@@ -53,7 +42,7 @@ yarn add aws-sdk
 ```
 My package is now installed and Yarn has modified or created 3 files for me:
 
-![image](https://github.com/qinggy/front-demo/blob/master/ae38eedf5a61526baf5b6ef72aa05cdcde0d6f6e.png)
+![image](https://github.com/qinggy/image/blob/master/ae38eedf5a61526baf5b6ef72aa05cdcde0d6f6e.png)
 
     1. node_modules directory where my package is located.
     2. package.json file where it has added my package to a dependencies list.This allows others to download my project and simply run yarn to install all packages that I've added.
