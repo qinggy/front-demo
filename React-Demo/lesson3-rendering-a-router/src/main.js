@@ -15,9 +15,9 @@ ReactDOM.render((
         every web app should aspire to use browserHistory */
     //<Router history={hashHistory}>
     <Router history={browserHistory}> 
-        <Route path="/" component={App}/>
+        <Route path="/test" component={App}/>
         {/* add the routes here */}
-        <Route path="/repos" component={Repos}/>
-        <Route path="/about" component={About}/>
+        <Route path="/test/repos" component={Repos}/>
+        <Route path="/test/about" component={About}/>
     </Router>
 ), container);
