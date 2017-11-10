@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import DraftDemo from './DraftDemo.jsx';
+import DraftPlugin from './Draft-plugins-editor.jsx';
 import TinyMceDemo from './TinyMceDemo.jsx';
 import SendEmailService from '../servicePack/sendEmail';
 
@@ -18,6 +19,7 @@ class RichEditor extends React.Component {
     this.showDraft = this.showDraft.bind(this);
     this.onSendEmail = this.onSendEmail.bind(this);
     this.setTinyMsg = this.setTinyMsg.bind(this);
+    this.setDraftMsg = this.setDraftMsg.bind(this);
     this.subjectChanged = this.subjectChanged.bind(this);
     this.receiversChanged = this.receiversChanged.bind(this);
     this.sendEmailService = new SendEmailService();
@@ -42,6 +44,10 @@ class RichEditor extends React.Component {
     console.log(this.tinymceContent);
   }
 
+  setDraftMsg(value) {
+
+  }
+
   subjectChanged(value) {
     this.setState({
       subject: value,
@@ -55,8 +61,8 @@ class RichEditor extends React.Component {
   }
 
   onSendEmail() {
-    const { subject, receivers } = this.state;
-    const sendContent = { 'content': this.tinymceContent, 'receivers': receivers, 'subject': subject };
+    const { subject, receivers, ifShowTiny } = this.state;
+    const sendContent = { 'content': ifShowTiny ? this.tinymceContent : '', 'receivers': receivers, 'subject': subject };
     this.sendEmailService.sendEmail(sendContent);
   }
 
@@ -79,7 +85,10 @@ class RichEditor extends React.Component {
             <TinyMceDemo
               setTinyMsg={this.setTinyMsg} /></div>
           <div className={classNames("hidden ", ifShowDraft ? 'visiable' : '')}>
-            <DraftDemo /></div>
+            {/* <DraftDemo
+              setDraftMsg={this.setDraftMsg} /> */}
+            <DraftPlugin />
+          </div>
         </div>
         <input type="button" value="Send Email" className="btn btnblue"
           onClick={() => {

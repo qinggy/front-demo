@@ -4,6 +4,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const getPath = p => path.resolve(__dirname, p);
 
+console.log(`apppath: ${getPath('../RichEditor-demo/app')}`);
+
 module.exports = {
   devtool: "eval-source-map",
   entry: ['webpack/hot/dev-server', __dirname + "/app/index.js"],
@@ -45,7 +47,7 @@ module.exports = {
           ]
         }),
         include: [
-          getPath('../app'),
+          getPath('../RichEditor-demo/app'),
         ],
       },
     ]
