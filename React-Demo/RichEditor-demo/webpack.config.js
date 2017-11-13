@@ -4,7 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const getPath = p => path.resolve(__dirname, p);
 
-console.log(`apppath: ${getPath('../RichEditor-demo/app')}`);
+console.log(`apppath: ${getPath('../RichEditor-demo/node_modules')}`);
 
 module.exports = {
   devtool: "eval-source-map",
@@ -50,6 +50,33 @@ module.exports = {
           getPath('../RichEditor-demo/app'),
         ],
       },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [{
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+                minimize: true,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins() {
+                  return [
+                    require('postcss-cssnext'),
+                  ];
+                },
+              },
+            },
+          ],
+        }),
+        include: [
+          getPath('../RichEditor-demo/node_modules'),
+        ],
+      }
     ]
   },
 

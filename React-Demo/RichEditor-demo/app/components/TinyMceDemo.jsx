@@ -12,7 +12,7 @@ class TinyMceDemo extends React.Component {
         'code',
         'table paste textcolor',
       ],
-      toolbar: 'fontsizeselect ｜ bold italic underline forecolor | bullist numlist | alignleft aligncenter alignright | link imageselector table | code',
+      toolbar: 'fontsizeselect | undo redo bold italic underline forecolor | bullist numlist | alignleft aligncenter alignright | link image table | removeformat code',
       menubar: false,
       theme: 'modern',
       branding: false,

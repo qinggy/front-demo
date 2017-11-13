@@ -1,12 +1,17 @@
 import React from 'react';
+import Editor from 'draft-js-plugins-editor';
 import {
   AtomicBlockUtils,
-  Editor,
   EditorState,
   RichUtils,
   convertToRaw,
 } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
+import createUndoPlugin from 'draft-js-undo-plugin';
+
+
+const undoPlugin = createUndoPlugin();
+const { UndoButton, RedoButton } = undoPlugin;
 
 // Custom overrides for "code" style.
 const styleMap = {
@@ -316,8 +321,11 @@ class DraftEditor extends React.Component {
             onTab={this.onTab}
             placeholder=""
             ref="editor"
+            plugins={[undoPlugin]}
             spellCheck={true}
           />
+          <UndoButton />
+          <RedoButton />
         </div>
       </div>
     </div>);
