@@ -1,17 +1,14 @@
 import React from 'react';
-import Editor from 'draft-js-plugins-editor';
 import {
   AtomicBlockUtils,
   EditorState,
   RichUtils,
+  Editor,
   convertToRaw,
+  Modifier,
 } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
-import createUndoPlugin from 'draft-js-undo-plugin';
 
-
-const undoPlugin = createUndoPlugin();
-const { UndoButton, RedoButton } = undoPlugin;
 
 // Custom overrides for "code" style.
 const styleMap = {
@@ -40,7 +37,7 @@ class StyleButton extends React.Component {
   render() {
     let className = 'RichEditor-styleButton';
     if (this.props.active) {
-      className += ' RichEditor-activeButton';
+      className += ' RichEditor-activeButton ' + colorStyleMap[this.props.style].color;
     }
     return (
       <span className={className} onMouseDown={this.onToggle}>
@@ -135,6 +132,18 @@ const styles = {
     width: '100%',
     whiteSpace: 'initial'
   },
+  controls: {
+    fontFamily: '\'Helvetica\', sans-serif',
+    fontSize: 14,
+    marginBottom: 10,
+    userSelect: 'none',
+  },
+  styleButton: {
+    color: '#999',
+    cursor: 'pointer',
+    marginRight: 16,
+    padding: '2px 0',
+  },
 };
 function mediaBlockRenderer(block) {
   if (block.getType() === 'atomic') {
@@ -161,6 +170,58 @@ const Media = (props) => {
   return media;
 };
 
+var COLORS = [
+  { label: 'Red', style: 'red' },
+  { label: 'Orange', style: 'orange' },
+  { label: 'Yellow', style: 'yellow' },
+  { label: 'Green', style: 'green' },
+  { label: 'Blue', style: 'blue' },
+  { label: 'Indigo', style: 'indigo' },
+  { label: 'Violet', style: 'violet' },
+];
+
+const ColorControls = (props) => {
+  var currentStyle = props.editorState.getCurrentInlineStyle();
+  return (
+    <div style={styles.controls}>
+      {COLORS.map(type =>
+        <StyleButton
+          key={type.label}
+          active={currentStyle.has(type.style)}
+          label={type.label}
+          onToggle={props.onToggle}
+          style={type.style}
+        />
+      )}
+    </div>
+  );
+};
+
+// This object provides the styling information for our custom color
+// styles.
+const colorStyleMap = {
+  red: {
+    color: 'rgba(255, 0, 0, 1.0)',
+  },
+  orange: {
+    color: 'rgba(255, 127, 0, 1.0)',
+  },
+  yellow: {
+    color: 'rgba(180, 180, 0, 1.0)',
+  },
+  green: {
+    color: 'rgba(0, 180, 0, 1.0)',
+  },
+  blue: {
+    color: 'rgba(0, 0, 255, 1.0)',
+  },
+  indigo: {
+    color: 'rgba(75, 0, 130, 1.0)',
+  },
+  violet: {
+    color: 'rgba(127, 0, 255, 1.0)',
+  },
+};
 
 class DraftEditor extends React.Component {
   constructor(props) {
@@ -183,6 +244,10 @@ class DraftEditor extends React.Component {
     this.onTab = this._onTab.bind(this);
     this.toggleBlockType = this._toggleBlockType.bind(this);
     this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
+
+    this.setUndo = this.setUndo.bind(this);
+    this.setRedo = this.setRedo.bind(this);
+    this.toggleColor = (toggledColor) => this._toggleColor(toggledColor);
   }
 
   _onChange(editorState) {
@@ -271,6 +336,50 @@ class DraftEditor extends React.Component {
     );
   }
 
+  setUndo() {
+    this._onChange(EditorState.undo(this.state.editorState));
+  }
+
+  setRedo() {
+    this._onChange(EditorState.redo(this.state.editorState));
+  }
+
+  _toggleColor(toggledColor) {
+    const { editorState } = this.state;
+    const selection = editorState.getSelection();
+
+    // Let's just allow one color at a time. Turn off all active colors.
+    const nextContentState = Object.keys(colorStyleMap)
+      .reduce((contentState, color) => {
+        return Modifier.removeInlineStyle(contentState, selection, color)
+      }, editorState.getCurrentContent());
+
+    let nextEditorState = EditorState.push(
+      editorState,
+      nextContentState,
+      'change-inline-style'
+    );
+
+    const currentStyle = editorState.getCurrentInlineStyle();
+
+    // Unset style override for current color.
+    if (selection.isCollapsed()) {
+      nextEditorState = currentStyle.reduce((state, color) => {
+        return RichUtils.toggleInlineStyle(state, color);
+      }, nextEditorState);
+    }
+
+    // If the color is being toggled on, apply it.
+    if (!currentStyle.has(toggledColor)) {
+      nextEditorState = RichUtils.toggleInlineStyle(
+        nextEditorState,
+        toggledColor
+      );
+    }
+
+    this.onChange(nextEditorState);
+  }
+
   render() {
     let urlInput;
     if (this.state.showURLInput) {
@@ -299,9 +408,15 @@ class DraftEditor extends React.Component {
     return (<div>
       <div style={styles.buttons}>
         <input type="button" onMouseDown={this.addImage} style={{ marginRight: 10 }} value="Add Image" />
+        <input type="button" value="undo" style={{ marginRight: 10 }} onClick={this.setUndo} />
+        <input type="button" value="redo" onClick={this.setRedo} />
       </div>
       {urlInput}
       <div className="RichEditor-root">
+        <ColorControls
+          editorState={editorState}
+          onToggle={this.toggleColor}
+        />
         <BlockStyleControls
           editorState={editorState}
           onToggle={this.toggleBlockType}
@@ -321,11 +436,8 @@ class DraftEditor extends React.Component {
             onTab={this.onTab}
             placeholder=""
             ref="editor"
-            plugins={[undoPlugin]}
             spellCheck={true}
           />
-          <UndoButton />
-          <RedoButton />
         </div>
       </div>
     </div>);
