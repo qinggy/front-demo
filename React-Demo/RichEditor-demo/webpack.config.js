@@ -10,7 +10,7 @@ module.exports = {
   devtool: "eval-source-map",
   entry: ['webpack/hot/dev-server', __dirname + "/app/index.js"],
   output: {
-    path: __dirname + "/build",
+    path: __dirname + "/dist",
     filename: "bundle.js"
   },
 
