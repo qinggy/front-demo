@@ -90,7 +90,7 @@ class RichEditor extends React.Component {
       <div>
         <p className="demolink" onClick={this.showTinyMCE}>TinyMCE RichEditor Demo</p>
         <p className="demolink" onClick={this.showDraft}>Draft RichEditor Demo</p>
-        <p className="demolink" onClick={this.showDraft2}>Draft RichEditor 2.0</p>
+        {/* <p className="demolink" onClick={this.showDraft2}>Draft RichEditor 2.0</p> */}
         <div className="divInput"><span>Subject</span>
           <input type="text" className="input margin-right"
             value={subject}
@@ -108,11 +108,11 @@ class RichEditor extends React.Component {
               setDraftMsg={this.setDraftMsg} />
             {/* <DraftPlugin /> */}
           </div>
-          <div className={classNames("hidden ", ifShowDraftNew ? 'visiable' : '')}>
+          {/* <div className={classNames("hidden ", ifShowDraftNew ? 'visiable' : '')}>
             <DraftPlugin
               setDraftMsg={this.setDraftMsg}
             />
-          </div>
+          </div> */}
         </div>
         <input type="button" value="Send Email" className="btn btnblue"
           onClick={() => {
