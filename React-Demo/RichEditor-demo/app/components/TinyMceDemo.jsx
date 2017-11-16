@@ -13,7 +13,8 @@ class TinyMceDemo extends React.Component {
         'table paste textcolor',
         'fullscreen',
       ],
-      toolbar: 'fontsizeselect | undo redo bold italic underline forecolor backcolor | bullist numlist | alignleft aligncenter alignright | link image table | removeformat code ',
+      //toolbar: false, //不显示toolbar
+      toolbar: 'fontsizeselect | undo redo bold italic underline forecolor backcolor | bullist numlist | alignleft aligncenter alignright | link unlink image table | removeformat code fullscreen ',
       menubar: false,
       theme: 'modern',
       branding: false,
@@ -21,14 +22,16 @@ class TinyMceDemo extends React.Component {
       relative_urls: false,
       table_toolbar: '',
       invalid_elements: 'form,iframe,noscript,object',
-      setup: (editor) => {
-        editor.addButton('imageselector', {
-          title: 'Insert Image',
-          icon: 'image',
-          //onclick: this.popupImageSelector,
-        });
-        this.editor = editor;
-      },
+      // setup: (editor) => {
+      //   editor.addButton('fullScreen', {
+      //     title: 'FullScreen',
+      //     icon: 'image',
+      //     onclick: () => {
+      //       editor.execCommand('mceFullScreen');
+      //     },
+      //   });
+      //   this.editor = editor;
+      // },
       statusbar: false,
     };
     this.onTinyMCEContentChanged = this.onTinyMCEContentChanged.bind(this);
