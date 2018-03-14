@@ -6,9 +6,6 @@ import {
 import createImagePlugin from 'draft-js-image-plugin';
 import createUndoPlugin from 'draft-js-undo-plugin';
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
-import 'draft-js-undo-plugin/lib/plugin.css';
-import 'draft-js-inline-toolbar-plugin/lib/plugin.css'
-
 
 const imagePlugin = createImagePlugin();
 const undoPlugin = createUndoPlugin();

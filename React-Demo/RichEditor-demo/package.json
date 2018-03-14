@@ -7,8 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack",
-    "dev": "webpack-dev-server --host 192.168.0.239",
-    "debug": "node ./build/server.dev.js"
+    "dev": "webpack-dev-server --host 192.168.0.8",
+    "debug": "node ./build/server.dev.js",
+    "build": "webpack -p --config ./webpack.config.js"
   },
   "author": "angus",
   "license": "ISC",
@@ -31,6 +32,7 @@
     "draft-js-undo-plugin": "^2.0.1",
     "es6-shim": "^0.35.3",
     "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",
     "lodash-webpack-plugin": "^0.11.4",
     "postcss-cssnext": "^3.0.2",

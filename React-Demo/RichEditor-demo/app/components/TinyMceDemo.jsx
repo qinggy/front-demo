@@ -1,5 +1,6 @@
 import React from 'react';
 import TinyMCE from 'react-tinymce';
+import style from './draft.css';
 
 class TinyMceDemo extends React.Component {
   constructor(props) {
@@ -8,19 +9,15 @@ class TinyMceDemo extends React.Component {
       height: 500,
       width: '60%',
       plugins: [
-        'lists link image',
-        'code',
-        'table paste textcolor',
-        'fullscreen',
+        'lists  link  image code paste textcolor',
       ],
       //toolbar: false, //不显示toolbar
-      toolbar: 'fontsizeselect | undo redo bold italic underline forecolor backcolor | bullist numlist | alignleft aligncenter alignright | link unlink image table | removeformat code fullscreen ',
+      toolbar: 'fontsizeselect | undo redo bold italic underline forecolor backcolor | bullist numlist | alignleft aligncenter alignright | link unlink image | removeformat code ',
       menubar: false,
       theme: 'modern',
       branding: false,
       convert_urls: false,
       relative_urls: false,
-      table_toolbar: '',
       invalid_elements: 'form,iframe,noscript,object',
       // setup: (editor) => {
       //   editor.addButton('fullScreen', {
@@ -42,16 +39,12 @@ class TinyMceDemo extends React.Component {
   }
 
   render() {
-    return (<div>
-      <div>
-        <div className="tinymce">
-          <TinyMCE
-            content={''}
-            config={this.editorConfig}
-            onChange={e => this.onTinyMCEContentChanged(e.target.getContent())}
-          />
-        </div>
-      </div>
+    return (<div className="tinymce">
+      <TinyMCE
+        content={''}
+        config={this.editorConfig}
+        onChange={e => this.onTinyMCEContentChanged(e.target.getContent())}
+      />
     </div>);
   }
 }
