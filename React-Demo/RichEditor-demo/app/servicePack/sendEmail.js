@@ -1,5 +1,7 @@
 import SendEmailService from '../services/sendEmail';
-import { apiServer } from '../config';
+import {
+  apiServer
+} from '../config';
 
 export default class SendEmialSP {
   constructor() {
@@ -9,8 +11,8 @@ export default class SendEmialSP {
 
   sendEmail(data) {
     this.sendEmailService.sendEmail(data)
-      .then(data =>
-        console.log(data)
-      ).catch(console.log('Error sending data'));
+      .then(data => {
+        alert("Send Email Successful");
+      }).catch(console.log('Error sending data'));
   }
 }

@@ -9,14 +9,17 @@ class RichEditor extends React.Component {
   constructor(props) {
     super(props);
     this.tinymceContent = "";
+    this.draftContent = "";
     this.state = {
       ifShowTiny: false,
       ifShowDraft: false,
+      ifShowDraftNew: false,
       subject: 'Test',
       receivers: 'angus@comm100.com;frank@comm100.com;fengchufu@163.com',
     };
     this.showTinyMCE = this.showTinyMCE.bind(this);
     this.showDraft = this.showDraft.bind(this);
+    this.showDraft2 = this.showDraft2.bind(this);
     this.onSendEmail = this.onSendEmail.bind(this);
     this.setTinyMsg = this.setTinyMsg.bind(this);
     this.setDraftMsg = this.setDraftMsg.bind(this);
@@ -29,6 +32,7 @@ class RichEditor extends React.Component {
     this.setState({
       ifShowTiny: true,
       ifShowDraft: false,
+      ifShowDraftNew: false,
     });
   }
 
@@ -36,7 +40,16 @@ class RichEditor extends React.Component {
     this.setState({
       ifShowTiny: false,
       ifShowDraft: true,
+      ifShowDraftNew: false,
     });
+  }
+
+  showDraft2() {
+    this.setState({
+      ifShowTiny: false,
+      ifShowDraft: false,
+      ifShowDraftNew: true,
+    })
   }
 
   setTinyMsg(value) {
@@ -45,7 +58,8 @@ class RichEditor extends React.Component {
   }
 
   setDraftMsg(value) {
-
+    this.draftContent = value;
+    console.log(this.draftContent);
   }
 
   subjectChanged(value) {
@@ -62,16 +76,21 @@ class RichEditor extends React.Component {
 
   onSendEmail() {
     const { subject, receivers, ifShowTiny } = this.state;
-    const sendContent = { 'content': ifShowTiny ? this.tinymceContent : '', 'receivers': receivers, 'subject': subject };
+    const sendContent = {
+      'content': ifShowTiny ? this.tinymceContent : this.draftContent,
+      'receivers': receivers,
+      'subject': subject
+    };
     this.sendEmailService.sendEmail(sendContent);
   }
 
   render() {
-    const { ifShowTiny, ifShowDraft, tinymceContent, subject, receivers } = this.state;
+    const { ifShowTiny, ifShowDraft, ifShowDraftNew, tinymceContent, subject, receivers } = this.state;
     return (
       <div>
         <p className="demolink" onClick={this.showTinyMCE}>TinyMCE RichEditor Demo</p>
         <p className="demolink" onClick={this.showDraft}>Draft RichEditor Demo</p>
+        {/* <p className="demolink" onClick={this.showDraft2}>Draft RichEditor 2.0</p> */}
         <div className="divInput"><span>Subject</span>
           <input type="text" className="input margin-right"
             value={subject}
@@ -85,10 +104,15 @@ class RichEditor extends React.Component {
             <TinyMceDemo
               setTinyMsg={this.setTinyMsg} /></div>
           <div className={classNames("hidden ", ifShowDraft ? 'visiable' : '')}>
-            {/* <DraftDemo
-              setDraftMsg={this.setDraftMsg} /> */}
-            <DraftPlugin />
+            <DraftDemo
+              setDraftMsg={this.setDraftMsg} />
+            {/* <DraftPlugin /> */}
           </div>
+          {/* <div className={classNames("hidden ", ifShowDraftNew ? 'visiable' : '')}>
+            <DraftPlugin
+              setDraftMsg={this.setDraftMsg}
+            />
+          </div> */}
         </div>
         <input type="button" value="Send Email" className="btn btnblue"
           onClick={() => {

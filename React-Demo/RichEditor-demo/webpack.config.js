@@ -4,13 +4,23 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const getPath = p => path.resolve(__dirname, p);
 
-console.log(`apppath: ${getPath('../RichEditor-demo/app')}`);
+console.log(__dirname);
+const isDev = process.env.NODE_ENV === 'dev ';
 
 module.exports = {
-  devtool: "eval-source-map",
-  entry: ['webpack/hot/dev-server', __dirname + "/app/index.js"],
+  entry: [
+    __dirname + "/build/tinymce/tinymce.min.js",
+    __dirname + "/build/tinymce/plugins/code/plugin.js",
+    __dirname + "/build/tinymce/plugins/image/plugin.js",
+    __dirname + "/build/tinymce/plugins/link/plugin.js",
+    __dirname + "/build/tinymce/plugins/lists/plugin.js",
+    __dirname + "/build/tinymce/plugins/paste/plugin.js",
+    __dirname + "/build/tinymce/plugins/textcolor/plugin.js",
+    __dirname + "/build/tinymce/themes/modern/theme.js",
+    __dirname + "/app/index.js"
+  ],
   output: {
-    path: __dirname + "/build",
+    path: __dirname + "/dist",
     filename: "bundle.js"
   },
 
@@ -28,10 +38,8 @@ module.exports = {
           use: [{
               loader: 'css-loader',
               options: {
-                modules: true,
                 sourceMap: true,
                 minimize: true,
-                localIdentName: '[name]__[local]--[hash:base64:5]',
               },
             },
             {
@@ -48,18 +56,49 @@ module.exports = {
         }),
         include: [
           getPath('../RichEditor-demo/app'),
+          getPath('../RichEditor-demo/build/tinymce/skins'),
         ],
+      },
+      {
+        test: /\.(gif|svg)$/,
+        include: [
+          getPath('../RichEditor-demo/app'),
+          getPath('../RichEditor-demo/build/tinymce/skins/lightgray/img/'),
+        ],
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: './resources/images/[name]_demo.[ext]',
+            publicPath: ' ',
+          },
+        }],
+      },
+      {
+        test: /\.(woff|eot|ttf|svg)$/,
+        include: [
+          getPath('../RichEditor-demo/build/tinymce/skins/lightgray/fonts/'),
+        ],
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: './resources/fonts/[name]_demo.[ext]',
+            publicPath: ' ',
+          },
+        }],
       },
     ]
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(), //热模块替换插件
+    new webpack.HotModuleReplacementPlugin(),
     new ExtractTextPlugin({
-      filename: 'style.css',
+      filename: 'richeditor.css',
       allChunks: true,
     }),
-  ],
+    // new webpack.optimize.UglifyJsPlugin({
+    //   sourceMap: true,
+    // }),
+  ].filter(_ => _),
 
   devServer: {
     contentBase: './build',
